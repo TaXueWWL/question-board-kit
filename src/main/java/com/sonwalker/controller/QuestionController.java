@@ -124,4 +124,14 @@ public class QuestionController {
 		LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
 		return "failed";
 	}
+	
+	@RequestMapping(value = "delete/{qbkId}", method = RequestMethod.GET)
+	public @ResponseBody String deleteQuestionDetailById(@PathVariable("qbkId") String qbkId) {
+		if (!StringUtils.isEmpty(qbkId)) {
+			LOGGER.info("待删除的id为：" + qbkId);
+			this.questionDetailRepository.deleteById(qbkId);
+			return "success";
+		}
+		return "failed";
+	}
 }

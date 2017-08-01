@@ -1,6 +1,5 @@
 package com.sonwalker.repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -139,6 +138,22 @@ public class QuestionDetailRepositoryImpl implements QuestionDetailRepository {
 			}
 		});
 		if (resultCount > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteById(final String id) {
+		String sql = " delete from QBK_QUESTION  where QBK_ID=? ";
+		int count = jdbcTemplate.update(sql, new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, id);
+			}
+		});
+		if (count > 0) {
 			return true;
 		}
 		return false;

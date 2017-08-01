@@ -23,4 +23,6 @@ public interface QuestionDetailRepository  {
 	public int insertOneQuestion(QuestionDetail questionDetail);
 	// 修改一个问题
 	public boolean updateOneQuestion(QuestionDetail questionDetail, String id);
+	// 删除一个问题
+	public boolean deleteById(String id);
 }

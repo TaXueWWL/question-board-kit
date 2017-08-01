@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>高阳捷迅话费用户接口调试-服务器通知模拟</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<style type="text/css">
+			/*选择大按钮*/
+			.btn-group-lg>.btn, .btn-lg {
+			    padding: 10px 16px;
+			    font-size: 18px;
+			    line-height: 2.333333;
+			    width: 58%;
+			    border-radius: 7px;
+			}
+			/*主要内容表格*/
+			.main-table {
+				width: 75%;
+				margin-left: 10%;
+			}
+			/*表格内容格式*/
+			.table-content {
+				text-align: center;
+				font-size: 19px;
+			}
+			/*表格返回参数*/
+			.form-return-content {
+				text-align: left;
+				font-size: 17px;
+				width:700px;
+				height:70px;
+				word-wrap:break-word;
+			}
+			.form-return-content-all {
+				text-align: left;
+				font-size: 17px;
+				width:700px;
+				height:100%;
+				word-wrap:break-word;
+			}
+		</style>
+	</head>
+	<body>
+		<!--
+        	时间：2017-03-13
+        	描述：标题栏
+        -->
+		<div class="site-header" id="header">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					        <span class="sr-only">Toggle navigation</span>
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span>
+				        </button>
+						<a class="navbar-brand header-brand" href="#">
+							<img src="img/19pay_01.png"/>							
+						</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="#"><b>问题自主记录工具</b><span class="sr-only">(current)</span></a>
+							</li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+		</div>
+		
+		<br/><br/><br/><br/><br/>
+		
+		<div class="col-md-12 col-lg-12 col-xs-12 main-table">
+			<div class="table-responsive">
+			<form action="hfNotifyCallback.action" method="post">
+			  	<table class="table table-bordered">
+			  		
+			  		<tr>
+			  			<td colspan="2" class="alert-info">
+			  				<div class="table-content">
+			  					<h4>参数列表</h4>
+			  				</div>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td width="26%">
+			  				<div class="table-content">
+			  					通知地址(notifyurl)
+			  					<p th:text="${#httpServletRequest.getParameter('warning-of-http')}" th:unless="${#httpServletRequest.getParameter('warning-of-http') == null}"></p>
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<input type="text" class="form-control" required="required" name="notify_url" placeholder="请输入代理商提供给19pay代理平台的url,例如:http://www.xxx.com" value="http://"/>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					商户订单号(orderid)
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<input type="text" class="form-control" required="required" name="orderid" placeholder="请输入下单时的订单号"/>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					充值状态代码(status)
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<select class="form-control" name="status">
+							  <option value="2">2(充值成功)</option>
+							  <option value="3">3(部分成功)</option>
+							  <option value="4">4(充值失败)</option>
+							</select>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					实际完成金额(ordermoney)
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<input type="text" class="form-control"  name="ordermoney" value="100" placeholder="请输入模拟的实际完成金额,不大于订单金额(默认100元)"/>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td colspan="2">
+			  				<center>
+			  					<input type="submit" value="提交" class="btn btn-primary" />
+			  					<input type="reset" class="btn btn-default" />
+			  				</center>
+			  			</td>
+			  		</tr>
+			  		</table>
+			  		</form>
+			  		<table class="table table-bordered">
+			  		<tr>
+			  			<td colspan="2" class="success">
+			  				<div class="table-content">
+			  					<h4>关键参数</h4>
+			  				</div>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td width="20%">
+			  				<div class="table-content">
+			  					加密签名原串
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<div class="form-return-content"><div th:text="${MD5Source}"></div></div>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					MD5签名摘要串
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<div class="form-return-content"><div th:text="${MD5Sign}"></div></div>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					结果通知完整url
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<div class="form-return-content"><div th:text="${url}"></div></div>
+			  				<br/>
+			  			</td>
+			  		</tr>
+			 
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					通知响应结果
+			  				</div>
+			  			</td>
+			  			<td>
+			  				<div class="form-return-content-all"><div th:text="${resultParam}"></div></div>
+			  				<div class="form-return-content">
+			  					<font color="red">
+			  					本提示来自接口测试工程:本请求通过POST方式提交，请确认您的接收方式是否为POST</font>
+			  				</div>
+			  			</td>
+			  		</tr> 
+			  		
+			  		<tr>
+			  			<td>
+			  				<div class="table-content">
+			  					其他说明
+			  				</div>
+			  			</td>
+			  			<td style="height:120px">
+			  				<div class="form-return-content">
+			  					<ol class="list-group">
+			  						<li class="list-group-item">本测试接口使用的用户id(merchantId)默认为<font color="red">111111</font></li>
+			  						<li class="list-group-item">手机余额为后台模拟,额度为<font color="red">1-100之间的随机整数</font>。实际请以运营商返回为准。</li>
+			  					</ol>
+			  				</div>
+			  			</td>
+			  		</tr>
+			  	</table>
+			</div>
+			<br/><br/><br/><br/>
+		</div>
+		
+		
+		<!--
+        	时间：2017-03-13
+        	描述：返回头部
+        -->
+		<div class="w-top">
+			<a href="#header"><i class="w-top-glyphicon glyphicon glyphicon-chevron-up"></i></a>
+		</div>
+		<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+			<footer>
+				<h4 class="footer-words">
+					<center>高阳捷迅©版权所有  2017</center>
+				</h4>
+			</footer>
+		</nav>
+		<script src="js/jquery-1.12.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/eggs.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

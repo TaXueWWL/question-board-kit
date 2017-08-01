@@ -52,12 +52,17 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
 		</dependency>
+		<!-- MySQL 连接驱动依赖 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 		<!-- Oracle数据库jdbc -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>14.0.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- JPA -->
 		<dependency>
            <groupId>org.springframework.boot</groupId>

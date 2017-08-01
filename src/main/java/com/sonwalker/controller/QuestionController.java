@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -28,6 +30,8 @@ import com.sonwalker.util.IDGenerator;
 @RequestMapping("question")
 public class QuestionController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuestionController.class);
+	
 	@Autowired
 	QuestionDetailRepository questionDetailRepository;
 	
@@ -35,7 +39,7 @@ public class QuestionController {
 	 * 获得所有的问题列表
 	 * @return
 	 */
-	@RequestMapping("all")
+	@RequestMapping(value = "all", method = RequestMethod.GET)
 	public @ResponseBody List<QuestionDetail> getAllQuestions() {
 		return questionDetailRepository.findAll();
 	}
@@ -50,6 +54,7 @@ public class QuestionController {
 		if (StringUtils.isEmpty(keyword)) {
 			return null;
 		}
+		LOGGER.info("search/keyword/{keyword}:" + keyword);
 		return questionDetailRepository.queryDetailsByLikeKey(keyword);
 	}
 	
@@ -58,6 +63,7 @@ public class QuestionController {
 		if (StringUtils.isEmpty(type)) {
 			return null;
 		}
+		LOGGER.info("search/type/{type}:" + type);
 		return questionDetailRepository.queryDetailsByType(type);
 	}
 	
@@ -68,6 +74,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public @ResponseBody QuestionDetail getQuestionDetailById(@PathVariable("id") String id) {
+		LOGGER.info("{id}:" + id);
 		return questionDetailRepository.getDetailById(id);
 	}
 	
@@ -89,8 +96,10 @@ public class QuestionController {
 					.qbkDate(qbkDate)
 					.qbkType(qbkType).build();
 			questionDetailRepository.insertOneQuestion(questionDetail);
+			LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey + "qbkDate:" + qbkDate);
 			return "success";
 		}
+		LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey + "qbkDate:" + qbkDate);
 		return "failed";
 	}
 	
@@ -109,8 +118,10 @@ public class QuestionController {
 					.qbkAnswer(qbkAnswer)
 					.qbkType(qbkType).build();
 			questionDetailRepository.updateOneQuestion(questionDetail, qbkId);
+			LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
 			return "success";
 		}
+		LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
 		return "failed";
 	}
 }

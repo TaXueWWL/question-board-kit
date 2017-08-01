@@ -46,5 +46,10 @@ public class DateUtil {
 		String formatDate = sdf.format(date);
 		return formatDate;
 	}
+	
+	public static void main(String[] args) {
+		String aString = DateUtil.parseDateToString(new Timestamp(System.currentTimeMillis()));
+		System.out.println(aString);
+	}
 
 }

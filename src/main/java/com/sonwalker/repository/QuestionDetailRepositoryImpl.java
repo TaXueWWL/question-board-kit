@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class QuestionDetailRepositoryImpl implements QuestionDetailRepository {
 				ps.setString(2, questionDetail.getQbkTitle());
 				ps.setString(3, questionDetail.getQbkKey());
 				ps.setString(4, questionDetail.getQbkAnswer());
-				ps.setDate(5, new Date(DateUtil.parseStringToDate(questionDetail.getQbkDate()).getTime()));
+				ps.setTimestamp(5, new Timestamp(DateUtil.parseStringToDate(questionDetail.getQbkDate()).getTime()));
 				ps.setString(6, questionDetail.getQbkType());
 			}
 		});

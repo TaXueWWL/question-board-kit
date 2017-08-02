@@ -41,6 +41,9 @@
 				height:100%;
 				word-wrap:break-word;
 			}
+			.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+				text-align: center
+			}
 		</style>
 	</head>
 	<body>
@@ -69,6 +72,18 @@
 							<li>
 								<a href="#"><b>问题自主记录工具</b><span class="sr-only">(current)</span></a>
 							</li>
+							<li class="banner-divider"></li>
+							<li>
+								<a href="#">查询所有<span class="sr-only">(current)</span></a>
+							</li>
+							<li class="banner-divider"></li>
+							<li>
+								<a href="#">条件查询<span class="sr-only">(current)</span></a>
+							</li>
+							<li class="banner-divider"></li>
+							<li>
+								<a href="#">问题新增<span class="sr-only">(current)</span></a>
+							</li>
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->
@@ -81,7 +96,7 @@
 		
 		<div class="col-md-12 col-lg-12 col-xs-12 main-table">
 			<div class="table-responsive">
-			<form action="hfNotifyCallback.action" method="post">
+			<!-- <form action="hfNotifyCallback.action" method="post">
 			  	<table class="table table-bordered">
 			  		
 			  		<tr>
@@ -150,81 +165,51 @@
 			  			</td>
 			  		</tr>
 			  		</table>
-			  		</form>
+			  		</form> -->
 			  		<table class="table table-bordered">
-			  		<tr>
-			  			<td colspan="2" class="success">
-			  				<div class="table-content">
-			  					<h4>关键参数</h4>
-			  				</div>
-			  			</td>
-			  		</tr>
-			  		
-			  		<tr>
-			  			<td width="20%">
-			  				<div class="table-content">
-			  					加密签名原串
-			  				</div>
+			  		<tr class="alert-info">
+			  			<td>
+			  				<div>问题内容</div>
 			  			</td>
 			  			<td>
-			  				<div class="form-return-content"><div th:text="${MD5Source}"></div></div>
-			  			</td>
-			  		</tr>
-			  		
-			  		<tr>
-			  			<td>
-			  				<div class="table-content">
-			  					MD5签名摘要串
-			  				</div>
+			  				<div>关键词</div>
 			  			</td>
 			  			<td>
-			  				<div class="form-return-content"><div th:text="${MD5Sign}"></div></div>
+			  				<div>提问时间</div>
+			  			</td>
+			  			<td>
+			  				<div>所属类别</div>
+			  			</td>
+			  			<td>
+			  				<div>具体操作</div>
 			  			</td>
 			  		</tr>
 			  		
 			  		<tr>
 			  			<td>
-			  				<div class="table-content">
-			  					结果通知完整url
-			  				</div>
+			  				<div><div th:text="${MD5Source}"></div></div>
 			  			</td>
 			  			<td>
-			  				<div class="form-return-content"><div th:text="${url}"></div></div>
-			  				<br/>
-			  			</td>
-			  		</tr>
-			 
-			  		
-			  		<tr>
-			  			<td>
-			  				<div class="table-content">
-			  					通知响应结果
-			  				</div>
+			  				<div><div th:text="${MD5Source}"></div></div>
 			  			</td>
 			  			<td>
-			  				<div class="form-return-content-all"><div th:text="${resultParam}"></div></div>
-			  				<div class="form-return-content">
-			  					<font color="red">
-			  					本提示来自接口测试工程:本请求通过POST方式提交，请确认您的接收方式是否为POST</font>
-			  				</div>
+			  				<div><div th:text="${MD5Source}"></div></div>
 			  			</td>
-			  		</tr> 
-			  		
-			  		<tr>
 			  			<td>
-			  				<div class="table-content">
-			  					其他说明
-			  				</div>
+			  				<div><div th:text="${MD5Source}"></div></div>
 			  			</td>
-			  			<td style="height:120px">
-			  				<div class="form-return-content">
-			  					<ol class="list-group">
-			  						<li class="list-group-item">本测试接口使用的用户id(merchantId)默认为<font color="red">111111</font></li>
-			  						<li class="list-group-item">手机余额为后台模拟,额度为<font color="red">1-100之间的随机整数</font>。实际请以运营商返回为准。</li>
-			  					</ol>
+			  			<td>
+			  				<div>
+			  					<center>
+				  					<button class="btn btn-primary">详情</button>
+				  					<button class="btn btn-warning">编辑</button>
+				  					<button class="btn btn-danger">删除</button>
+			  					</center>
 			  				</div>
 			  			</td>
 			  		</tr>
+			 	 
+			  		
 			  	</table>
 			</div>
 			<br/><br/><br/><br/>

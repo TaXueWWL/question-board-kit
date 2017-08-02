@@ -18,28 +18,9 @@
 			}
 			/*主要内容表格*/
 			.main-table {
-				width: 75%;
-				margin-left: 10%;
-			}
-			/*表格内容格式*/
-			.table-content {
-				text-align: center;
-				font-size: 19px;
-			}
-			/*表格返回参数*/
-			.form-return-content {
-				text-align: left;
-				font-size: 17px;
-				width:700px;
-				height:70px;
-				word-wrap:break-word;
-			}
-			.form-return-content-all {
-				text-align: left;
-				font-size: 17px;
-				width:700px;
-				height:100%;
-				word-wrap:break-word;
+				margin-left:2%;
+				margin-left:2%;
+				width: 95%;
 			}
 			.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
 				text-align: center
@@ -74,15 +55,26 @@
 							</li>
 							<li class="banner-divider"></li>
 							<li>
-								<a href="#">查询所有<span class="sr-only">(current)</span></a>
+								<a href="#" data-toggle="modal"
+										data-target="#addQuestion">问题新增<span class="sr-only">(current)</span></a>
 							</li>
 							<li class="banner-divider"></li>
 							<li>
-								<a href="#">条件查询<span class="sr-only">(current)</span></a>
+								<a href="#"><span class="sr-only">(current)</span></a>
 							</li>
-							<li class="banner-divider"></li>
+						</ul>
+
+
+
+						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a href="#">问题新增<span class="sr-only">(current)</span></a>
+								<form class="navbar-form navbar-left" role="search">
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="输入要查询的关键字"
+											required="required" />
+									</div>
+									<button type="submit" class="btn btn-primary">搜索</button>
+								</form>
 							</li>
 						</ul>
 					</div>
@@ -196,7 +188,14 @@
 			  				<div><div th:text="${questionDetail.qbkDate}"></div></div>
 			  			</td>
 			  			<td>
-			  				<div><div th:text="${questionDetail.qbkType}"></div></div>
+			  				<div>
+			  					<div th:switch="${questionDetail.qbkType}">
+			  						<p th:case="'0'">第三方</p>
+			  						<p th:case="'1'">高阳esales</p>
+			  						<p th:case="'2'">19e-esales</p>
+			  					</div>
+			  					
+			  				</div>
 			  			</td>
 			  			<td>
 			  				<div>
@@ -215,7 +214,58 @@
 			<br/><br/><br/><br/>
 		</div>
 		
-		
+		<!-- 问题新增modal -->
+		<div class="modal fade" id="addQuestion" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title" id="myModalLabel">
+						<center>问题新增</center>
+					</h3>
+				</div>
+				<form action="${pageContext.request.contextPath}/modifyPasswd.action" method="post" id="regisform">
+					<div class="modal-body">
+						<table class="table table-bordered table-striped table-hover">
+							<tr>
+								<td>问题描述</td>
+								<td><input type="password" name="newPasswd"
+									id="stu_password" class="form-control" maxlength="20" /></td>
+							</tr>
+							<tr>
+								<td>关键词(中文逗号分隔)</td>
+								<td><input type="password" name="newPasswd"
+									id="stu_password" class="form-control" maxlength="20" /></td>
+							</tr>
+							<tr>
+								<td>问题答案</td>
+								<td>
+									<textarea class="form-control" rows="3" name="newPasswd"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>所属类别</td>
+								<td>
+									<input type="password" name="newPasswd"
+										id="stu_password" class="form-control" maxlength="20" />
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<center>
+						<input type="submit" class="btn btn-primary" value="提交" />
+							<button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+						</center>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		</div>
+		<!-- /.modal -->
 		<!--
         	时间：2017-03-13
         	描述：返回头部

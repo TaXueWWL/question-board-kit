@@ -51,7 +51,7 @@ public class QuestionDetailRepositoryImpl implements QuestionDetailRepository {
 	}
 
 	public QuestionDetail getDetailById(String id) {
-		String sql = " select rowid, t.QBK_ID, t.QBK_TITLE, t.QBK_KEY, t.QBK_ANSWER, t.QBK_DATE, t.QBK_TYPE from QBK_QUESTION t where t.qbk_id=? ";
+		String sql = " select t.QBK_ID, t.QBK_TITLE, t.QBK_KEY, t.QBK_ANSWER, t.QBK_DATE, t.QBK_TYPE from QBK_QUESTION t where t.qbk_id=? ";
 		final QuestionDetail questionDetail = new QuestionDetail();
 		jdbcTemplate.query(sql, new Object[]{id}, new RowCallbackHandler() {
 			

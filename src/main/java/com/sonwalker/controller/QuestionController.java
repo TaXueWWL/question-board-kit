@@ -27,7 +27,6 @@ import com.sonwalker.util.IDGenerator;
  * @describe 问题页面处理控制器
  */
 @Controller
-@RequestMapping("question")
 public class QuestionController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuestionController.class);
@@ -39,7 +38,7 @@ public class QuestionController {
 	 * 获得所有的问题列表
 	 * @return
 	 */
-	@RequestMapping(value = "all", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getAllQuestions(HttpServletRequest request) {
 		List<QuestionDetail> questionDetails = questionDetailRepository.findAll();
 		if (questionDetails != null && questionDetails.size() > 0) {
@@ -76,7 +75,7 @@ public class QuestionController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "question/{id}", method = RequestMethod.GET)
 	public @ResponseBody QuestionDetail getQuestionDetailById(@PathVariable("id") String id) {
 		LOGGER.info("{id}:" + id);
 		return questionDetailRepository.getDetailById(id);

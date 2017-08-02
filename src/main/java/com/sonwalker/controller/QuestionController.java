@@ -39,7 +39,7 @@ public class QuestionController {
 	 * 获得所有的问题列表
 	 * @return
 	 */
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = "all", method = RequestMethod.GET)
 	public String getAllQuestions(HttpServletRequest request) {
 		List<QuestionDetail> questionDetails = questionDetailRepository.findAll();
 		if (questionDetails != null && questionDetails.size() > 0) {

@@ -39,9 +39,13 @@ public class QuestionController {
 	 * 获得所有的问题列表
 	 * @return
 	 */
-	@RequestMapping(value = "all", method = RequestMethod.GET)
-	public @ResponseBody List<QuestionDetail> getAllQuestions() {
-		return questionDetailRepository.findAll();
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String getAllQuestions(HttpServletRequest request) {
+		List<QuestionDetail> questionDetails = questionDetailRepository.findAll();
+		if (questionDetails != null && questionDetails.size() > 0) {
+			request.setAttribute("questionDetails", questionDetails);
+		}
+		return "index";
 	}
 	
 	/**

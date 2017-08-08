@@ -7,21 +7,6 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/common.css"/>
-		<link rel="stylesheet" href="css/themes/default/default.css" />
-		<script charset="utf-8" src="js/kindeditor-min.js"></script>
-		<script charset="utf-8" src="js/lang/zh_CN.js"></script>
-		<script>
-			var editor;
-			KindEditor.ready(function(K) {
-				editor = K.create('textarea[name="qbkAnswer"]', {
-					allowFileManager : true,
-					resizeType : 1,
-					width:"100%",
-					height:"350px"
-
-				});
-			});
-		</script>
 		<style type="text/css">
 			/*选择大按钮*/
 			.btn-group-lg>.btn, .btn-lg {
@@ -125,7 +110,7 @@
 			  			</td>
 			  		</tr>
 			  		
-			  		<tr th:each="questionDetail : ${questionDetails}">
+			  		<tr th:each="questionDetail : ${list}">
 			  			<td>
 			  				<div><div th:text="${questionDetail.qbkTitle}"></div></div>
 			  			</td>
@@ -177,7 +162,7 @@
 					<div class="modal-body">
 						<table class="table table-bordered table-striped table-hover">
 							<tr>
-								<td width="80px">问题描述</td>
+								<td>问题描述</td>
 								<td><input type="text" name="qbkTitle" class="form-control" maxlength="100" /></td>
 							</tr>
 							<tr>
@@ -187,8 +172,8 @@
 							<tr>
 								<td>问题答案</td>
 								<td>
-									<textarea name="qbkAnswer" style="width:500px;height:400px;visibility:hidden;" class="form-control"></textarea>
- 								</td>
+									<textarea class="form-control" rows="10" name="qbkAnswer"></textarea>
+								</td>
 							</tr>
 							<tr>
 								<td>所属类别</td>

@@ -7,21 +7,6 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/common.css"/>
-		<link rel="stylesheet" href="css/themes/default/default.css" />
-		<script charset="utf-8" src="js/kindeditor-min.js"></script>
-		<script charset="utf-8" src="js/lang/zh_CN.js"></script>
-		<script>
-			var editor;
-			KindEditor.ready(function(K) {
-				editor = K.create('textarea[name="qbkAnswer"]', {
-					allowFileManager : true,
-					resizeType : 1,
-					width:"100%",
-					height:"350px"
-
-				});
-			});
-		</script>
 		<style type="text/css">
 			/*选择大按钮*/
 			.btn-group-lg>.btn, .btn-lg {
@@ -36,9 +21,6 @@
 				margin-left:2%;
 				margin-left:2%;
 				width: 95%;
-			}
-			.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-				text-align: center
 			}
 		</style>
 	</head>
@@ -70,10 +52,6 @@
 							</li>
 							<li class="banner-divider"></li>
 							<li>
-								<a href="#" data-toggle="modal" data-target="#addQuestion">问题新增<span class="sr-only">(current)</span></a>
-							</li>
-							<li class="banner-divider"></li>
-							<li>
 								<a href="#"><span class="sr-only">(current)</span></a>
 							</li>
 							<li class="banner-divider"></li>
@@ -81,7 +59,6 @@
 								<a href="#"><font color="red">搜索类别关键词:0--第三方|1--高阳esales|2--19esales|3--其他</font></a>
 							</li>
 						</ul>
-
 
 
 						<ul class="nav navbar-nav navbar-right">
@@ -107,35 +84,45 @@
 		<div class="col-md-12 col-lg-12 col-xs-12 main-table">
 			<div class="table-responsive">
 			  	<table class="table table-bordered">
-			  		<tr class="alert-info">
-			  			<td>
-			  				<div>问题内容</div>
+			  		<tr>
+			  			<td class="alert-info" width="100px">
+			  				<div><center>问题标题</center></div>
 			  			</td>
-			  			<td>
-			  				<div>关键词</div>
-			  			</td>
-			  			<td>
-			  				<div>提问时间</div>
-			  			</td>
-			  			<td>
-			  				<div>所属类别</div>
-			  			</td>
-			  			<td>
-			  				<div>具体操作</div>
+			  			<td class="alert-info">
+			  				<div><div th:text="${questionDetail.qbkTitle}"></div></div>
 			  			</td>
 			  		</tr>
 			  		
-			  		<tr th:each="questionDetail : ${questionDetails}">
+			  		<tr>
 			  			<td>
-			  				<div><div th:text="${questionDetail.qbkTitle}"></div></div>
+			  				<div><center>问题答案</center></div>
 			  			</td>
 			  			<td>
+			  				<div><div th:utext="${questionDetail.qbkAnswer}"></div></div>
+			  			</td>
+			  		</tr>
+			  		
+			  		<tr>
+			  			<td class="alert-info">
+			  				<div><center>关键词</center></div>
+			  			</td>
+			  			<td class="alert-info">
 			  				<div><div th:text="${questionDetail.qbkKey}"></div></div>
+			  			</td>
+			  		</tr>
+			  		<tr>
+			  			<td>
+			  				<div><center>提问时间</center></div>
 			  			</td>
 			  			<td>
 			  				<div><div th:text="${questionDetail.qbkDate}"></div></div>
 			  			</td>
-			  			<td>
+			  		</tr>
+			  		<tr>
+			  			<td class="alert-info">
+			  				<div><center>所属类别</center></div>
+			  			</td>
+			  			<td class="alert-info">
 			  				<div>
 			  					<div th:switch="${questionDetail.qbkType}">
 			  						<p th:case="'0'">第三方</p>
@@ -143,16 +130,6 @@
 			  						<p th:case="'2'">19e-esales</p>
 			  						<p th:case="'3'">其他分类</p>
 			  					</div>
-			  					
-			  				</div>
-			  			</td>
-			  			<td>
-			  				<div>
-			  					<center>
-				  					<a th:href="'question_detail?qbkId=' + ${questionDetail.qbkId}"><button class="btn btn-primary">详情</button></a>
-				  					<a th:href="'question_update?qbkId=' + ${questionDetail.qbkId}"><button class="btn btn-warning">编辑</button></a>
-				  					<a th:href="'question_delete?qbkId=' + ${questionDetail.qbkId}"><button class="btn btn-danger" onclick="confirm('确认删除?')">删除</button></a>
-			  					</center>
 			  				</div>
 			  			</td>
 			  		</tr>
@@ -161,60 +138,6 @@
 			<br/><br/><br/><br/>
 		</div>
 		
-		<!-- 问题新增modal -->
-		<div class="modal fade" id="addQuestion" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h3 class="modal-title" id="myModalLabel">
-						<center>问题新增</center>
-					</h3>
-				</div>
-				<form action="insert_question.action" method="post">
-					<div class="modal-body">
-						<table class="table table-bordered table-striped table-hover">
-							<tr>
-								<td width="80px">问题描述</td>
-								<td><input type="text" name="qbkTitle" class="form-control" maxlength="100" /></td>
-							</tr>
-							<tr>
-								<td>关键词(中文逗号分隔)</td>
-								<td><input type="text" name="qbkKey" class="form-control" maxlength="100" /></td>
-							</tr>
-							<tr>
-								<td>问题答案</td>
-								<td>
-									<textarea name="qbkAnswer" style="width:500px;height:400px;visibility:hidden;" class="form-control"></textarea>
- 								</td>
-							</tr>
-							<tr>
-								<td>所属类别</td>
-								<td>
-									<select class="form-control" name="qbkType">
-									  <option value="0">第三方平台</option>
-									  <option value="1">高阳esales</option>
-									  <option value="2">19e-esales</option>
-									  <option value="3">其他</option>
-									</select>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<center>
-						<input type="submit" class="btn btn-primary" value="提交" />
-						<button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
-						</center>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		</div>
-		<!-- /.modal -->
 		
 		
 		

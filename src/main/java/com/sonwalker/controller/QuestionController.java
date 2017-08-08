@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sonwalker.domain.QuestionDetail;
@@ -33,12 +34,14 @@ public class QuestionController {
 	
 	@Autowired
 	QuestionDetailRepository questionDetailRepository;
+
+	private List<QuestionDetail> list;
 	
 	/**
 	 * 获得所有的问题列表
 	 * @return
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getAllQuestions(HttpServletRequest request) {
 		List<QuestionDetail> questionDetails = questionDetailRepository.findAll();
 		if (questionDetails != null && questionDetails.size() > 0) {
@@ -52,22 +55,21 @@ public class QuestionController {
 	 * @param keyword
 	 * @return
 	 */
-	@GetMapping("search/keyword/{keyword}")
-	public @ResponseBody List<QuestionDetail> getDetailsByLikeKey(@PathVariable(value = "keyword") String keyword) {
+	@RequestMapping(value = "search", method = {RequestMethod.GET, RequestMethod.POST})
+	public String getDetailsByLikeKey(@RequestParam(value = "keyword") String keyword, HttpServletRequest request) {
 		if (StringUtils.isEmpty(keyword)) {
 			return null;
 		}
-		LOGGER.info("search/keyword/{keyword}:" + keyword);
-		return questionDetailRepository.queryDetailsByLikeKey(keyword);
-	}
-	
-	@GetMapping("search/type/{type}")
-	public @ResponseBody List<QuestionDetail> getDetailsByType(@PathVariable(value = "type") String type) {
-		if (StringUtils.isEmpty(type)) {
-			return null;
+		if ("0,1,2,3".indexOf(keyword) >= 0) {
+			LOGGER.info("关键词为类别:" + keyword);
+			list = questionDetailRepository.queryDetailsByType(keyword);
+		} else {
+			LOGGER.info("关键词为词语:" + keyword);
+			list = questionDetailRepository.queryDetailsByLikeKey(keyword);
 		}
-		LOGGER.info("search/type/{type}:" + type);
-		return questionDetailRepository.queryDetailsByType(type);
+		LOGGER.info("question/search/keyword/{keyword}:" + keyword);
+		request.setAttribute("list", list);
+		return "search";
 	}
 	
 	/**
@@ -75,15 +77,20 @@ public class QuestionController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "question/{id}", method = RequestMethod.GET)
-	public @ResponseBody QuestionDetail getQuestionDetailById(@PathVariable("id") String id) {
-		LOGGER.info("{id}:" + id);
-		return questionDetailRepository.getDetailById(id);
+	@RequestMapping(value = "question_detail", method = RequestMethod.GET)
+	public String getQuestionDetailById(@RequestParam("qbkId") String qbkId, HttpServletRequest request) {
+		LOGGER.info("{id}:" + qbkId);
+		QuestionDetail detail = null;
+		if (qbkId != null) {
+			detail = questionDetailRepository.getDetailById(qbkId);
+		}
+		request.setAttribute("questionDetail", detail);
+		return "details";
 	}
 	
 	
-	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public @ResponseBody String insertQuestionDetail(HttpServletRequest request) {
+	@RequestMapping(value = "insert_question", method = {RequestMethod.POST,RequestMethod.GET})
+	public String insertQuestionDetail(HttpServletRequest request) {
 		String qbkId = IDGenerator.generateId();
 		String qbkTitle = request.getParameter("qbkTitle");
 		String qbkKey = request.getParameter("qbkKey");
@@ -100,14 +107,25 @@ public class QuestionController {
 					.qbkType(qbkType).build();
 			questionDetailRepository.insertOneQuestion(questionDetail);
 			LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey + "qbkDate:" + qbkDate);
-			return "success";
 		}
 		LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey + "qbkDate:" + qbkDate);
-		return "failed";
+		return "forward:/";
 	}
 	
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public @ResponseBody String updateQuestionDetail(HttpServletRequest request) {
+	@RequestMapping(value = "question_update", method = RequestMethod.GET)
+	public String updateQuestionDetailSearch(@RequestParam("qbkId") String qbkId, HttpServletRequest request) {
+		LOGGER.info("{id}:" + qbkId);
+		QuestionDetail detail = null;
+		if (qbkId != null) {
+			detail = questionDetailRepository.getDetailById(qbkId);
+		}
+		request.setAttribute("questionDetail", detail);
+		return "update";
+	}
+	
+	
+	@RequestMapping(value = "question_doupdate", method = RequestMethod.POST)
+	public String updateQuestionDetail(HttpServletRequest request) {
 		String qbkId = request.getParameter("qbkId");
 		String qbkTitle = request.getParameter("qbkTitle");
 		String qbkKey = request.getParameter("qbkKey");
@@ -121,20 +139,20 @@ public class QuestionController {
 					.qbkAnswer(qbkAnswer)
 					.qbkType(qbkType).build();
 			questionDetailRepository.updateOneQuestion(questionDetail, qbkId);
-			LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
-			return "success";
+			LOGGER.info("修改成功--qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
+			return "forward:/";
 		}
-		LOGGER.info("qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
-		return "failed";
+		LOGGER.info("修改失败--qbkId:" + qbkId + " qbkTitle:" + qbkTitle + " qbkKey:" + qbkKey);
+		return "forward:/";
 	}
 	
-	@RequestMapping(value = "delete/{qbkId}", method = RequestMethod.GET)
-	public @ResponseBody String deleteQuestionDetailById(@PathVariable("qbkId") String qbkId) {
+	@RequestMapping(value = "question_delete", method = RequestMethod.GET)
+	public String deleteQuestionDetailById(@RequestParam("qbkId") String qbkId) {
 		if (!StringUtils.isEmpty(qbkId)) {
 			LOGGER.info("待删除的id为：" + qbkId);
 			this.questionDetailRepository.deleteById(qbkId);
-			return "success";
+			return "forward:/";
 		}
-		return "failed";
+		return "forward:/";
 	}
 }
